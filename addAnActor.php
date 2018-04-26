@@ -1,8 +1,50 @@
 <!DOCTYPE html>
 <html>
+<head>
+<style>
+body {
+    margin: 0;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 25%;
+    background-color: #f1f1f1;
+    position: fixed;
+    height: 100%;
+    overflow: auto;
+}
+
+li a {
+    display: block;
+    color: #000;
+    padding: 8px 16px;
+    text-decoration: none;
+}
+
+li a.active {
+    background-color: #4CAF50;
+    color: white;
+}
+
+li a:hover:not(.active) {
+    background-color: #555;
+    color: white;
+}
+</style>
 <body>
 
-<h1>Add an Actor</h1>
+<ul>
+  <li><a class="active" href="addAnActor.php">Main Page</a></li>
+  <li><a href="addAnActor.php">Add Acotr/Director</a></li>
+  <li><a href="addComments.php">Add comment</a></li>
+</ul>
+
+
+<div class='A' style="margin-left:25%;padding:1px 16px;height:1000px;">
+<h1>Add an actor</h1>
 <br>Type an Actor's info in the following boxes:
 <br>Example: Tom Hanks M 1998-03-11 N/A
 <br> <br>
@@ -21,11 +63,8 @@ Date of Death (N/A if still alive): <input type="text" name="DOD"> <br>
 <br><input type="submit">
 <br>
 </form>
-
 <?php
-
-  if ($_SERVER["REQUEST_METHOD"] == "POST")
-  {
+if ($_SERVER["REQUEST_METHOD"] == "POST"){
     $occupation = $_REQUEST['actOrDir'];
     $firstName = $_REQUEST['fname'];
     $lastName = $_REQUEST['lname'];
@@ -39,20 +78,90 @@ Date of Death (N/A if still alive): <input type="text" name="DOD"> <br>
     {
       die('Unable to connect to database [' . $db->connect_error . ']');
     }
-
+    //echo $sex;
     //Inserting the submitted values into the Actor/Director table
     if($occupation == "Actor")
     {
-      $query = ("INSERT INTO Actor (last, first, sex, dob, dod) VALUES ($firstName, $lastName, $sex, $dob, $dod)");
+        //$rs = $db->query("SELECT id from Actor ORDER BY id DESC LIMIT 1;");
+    	$rs = mysqli_query($db,"SELECT id from Actor ORDER BY id DESC LIMIT 1;");
+	    foreach($rs as $key => $var){
+	        foreach($var as $col => $val) {
+	            $MaxID1 = $val;
+	            //echo $MaxID1;
+	        }
+	    }
+	    $rs = mysqli_query($db,"SELECT id from MaxPersonID;");
+	    foreach($rs as $key => $var){
+	        foreach($var as $col => $val){
+	           	$MaxID2 = $val;
+	          	//echo $MaxID2;
+	        }
+	    }
+	    $MaxActorID = max($MaxID1,$MaxID2);
+	    echo $MaxActorID; 
+	    if(mysqli_query($db,"INSERT INTO Actor (id, last, first, sex, dob, dod) VALUES ($MaxActorID+1,'$firstName', '$lastName', '$sex', '$dob', '$dod');")){
+	      	//if（!mysqli_query($db,"UPDATE MaxPersonID SET id = $MaxDirectorID+1;")）{
+	      	//	mysqli_query($db,"INSERT INTO MaxPersonID(id) VALUES ($MaxDirectorID+1);")
+	      	//}
+	      	$rs = mysqli_query($db,"SELECT id from MaxPersonID;");
+	    	foreach($rs as $key => $var){
+	        	foreach($var as $col => $val){
+	           		$id = $val;
+	        	}
+	    	}
+	    	if($id == 0){
+	    		mysqli_query($db,"INSERT INTO MaxPersonID(id) VALUES ($MaxActorID+1);");
+	    	}else{
+	    		mysqli_query($db,"UPDATE MaxPersonID SET id = $MaxActorID+1;");
+	    	}
+	      	echo "Successfully added!";
+	  	}else{
+	  		echo "No insert happened!";
+	  	}
     }
-    else
+    else 
     {
-      $query = ("INSERT INTO Director (last, first, sex, dob, dod) VALUES ($firstName, $lastName, $sex, $dob, $dod)");
+        $rs = mysqli_query($db,"SELECT id from Director ORDER BY id DESC LIMIT 1;");
+	    foreach($rs as $key => $var){
+	        foreach($var as $col => $val) {
+	            $MaxID1 = $val;
+	            //echo $MaxID1;
+	        }
+	    }
+	    $rs = mysqli_query($db,"SELECT id from MaxPersonID;");
+	    foreach($rs as $key => $var){
+	        foreach($var as $col => $val){
+	           	$MaxID2 = $val;
+	          	//echo $MaxID2;
+	        }
+	    }
+	    $MaxDirectorID = max($MaxID1,$MaxID2);
+	    echo $MaxDirectorID; 
+	    if(mysqli_query($db,"INSERT INTO Director (id,last, first, dob, dod) VALUES ($MaxDirectorID+1,'$firstName', '$lastName', '$dob', '$dod');"))
+	    {
+	    	$rs = mysqli_query($db,"SELECT id from MaxDirectorID;");
+	    	foreach($rs as $key => $var){
+	        	foreach($var as $col => $val){
+	           		$id = $val;
+	        	}
+	    	}
+	    	if($id == 0){
+	    		mysqli_query($db,"INSERT INTO MaxPersonID(id) VALUES $MaxDirectorID+1;");
+	    	}else{
+	    		mysqli_query($db,"UPDATE MaxPersonID SET id = $MaxDirectorID+1;");
+	    	}
+	    	echo "Successfully added!";
+	  	}else{
+	  		echo "No insert happened!";
+	  	}
     }
-    $rs = $db->query($query);
-
-  }
+    //mysqli_close($db);
+}
 ?>
+</div>
+
+
+
 
 
 </body>
