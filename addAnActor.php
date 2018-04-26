@@ -98,8 +98,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 	        }
 	    }
 	    $MaxActorID = max($MaxID1,$MaxID2);
-	    echo $MaxActorID; 
-	    if(mysqli_query($db,"INSERT INTO Actor (id, last, first, sex, dob, dod) VALUES ($MaxActorID+1,'$firstName', '$lastName', '$sex', '$dob', '$dod');")){
+	    echo $MaxActorID;
+	    if($dod == 'N/A'){
+	    	$rs = mysqli_query($db,"INSERT INTO Actor (id, last, first, sex, dob) VALUES ($MaxActorID+1,'$firstName', '$lastName', '$sex', '$dob');");
+	    }else{
+	    	$rs = mysqli_query($db,"INSERT INTO Actor (id, last, first, sex, dob, dod) VALUES ($MaxActorID+1,'$firstName', '$lastName', '$sex', '$dob', '$dod');");
+		}
+	    if($rs == true){
 	      	//if（!mysqli_query($db,"UPDATE MaxPersonID SET id = $MaxDirectorID+1;")）{
 	      	//	mysqli_query($db,"INSERT INTO MaxPersonID(id) VALUES ($MaxDirectorID+1);")
 	      	//}
@@ -136,9 +141,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 	        }
 	    }
 	    $MaxDirectorID = max($MaxID1,$MaxID2);
-	    echo $MaxDirectorID; 
-	    if(mysqli_query($db,"INSERT INTO Director (id,last, first, dob, dod) VALUES ($MaxDirectorID+1,'$firstName', '$lastName', '$dob', '$dod');"))
-	    {
+	    echo $MaxDirectorID;
+	    if($dod == 'N/A'){
+			$rs = mysqli_query($db,"INSERT INTO Director (id,last, first, dob) VALUES ($MaxDirectorID+1,'$firstName', '$lastName', '$dob');");
+		}else{
+	    	$rs = mysqli_query($db,"INSERT INTO Director (id,last, first, dob, dod) VALUES ($MaxDirectorID+1,'$firstName', '$lastName', '$dob', '$dod');");
+		}
+	    if($rs == true){
 	    	$rs = mysqli_query($db,"SELECT id from MaxDirectorID;");
 	    	foreach($rs as $key => $var){
 	        	foreach($var as $col => $val){
@@ -159,9 +168,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 }
 ?>
 </div>
-
-
-
 
 
 </body>
