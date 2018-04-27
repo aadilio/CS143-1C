@@ -38,7 +38,8 @@ li a:hover:not(.active) {
 
 <ul>
   <li><a class="active" href="addAnActor.php">Main Page</a></li>
-  <li><a href="addAnActor.php">Add Acotr/Director</a></li>
+  <li><a href="addAnActor.php">Add Actor/Director</a></li>
+  <li><a href="addAMovie.php">Add Movie </a></li>
   <li><a href="addComments.php">Add comment</a></li>
 </ul>
 
@@ -124,7 +125,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 	  		echo "No insert happened!";
 	  	}
     }
-    else 
+    else
     {
         $rs = mysqli_query($db,"SELECT id from Director ORDER BY id DESC LIMIT 1;");
 	    foreach($rs as $key => $var){
