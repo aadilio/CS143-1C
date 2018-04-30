@@ -1,3 +1,28 @@
+<?php 
+    $db = new mysqli('localhost', 'cs143', '', 'CS143');
+  if($db->connect_errno > 0){
+      die('Unable to connect to database [' . $db->connect_error . ']');
+  }
+    $query="SELECT CONCAT(title,' ','(',year,')') AS MovieName, id FROM Movie;";
+    $rsMovie = $db->query($query);
+    //Basic error handling 
+    if(!$rsMovie){
+        $errmsg = $db->error;
+        print "Query failed: $errmsg <br />";
+        exit(1);
+    }
+    $query1="SELECT CONCAT(first, ' ', last,' ', '(', dob, ')')AS ActorName, id, dob FROM Actor ORDER BY last ASC;";
+    $rsactor = $db->query($query1);
+    //Basic error handling 
+    if(!$rsactor){
+        $errmsg = $db->error;
+        print "Query failed: $errmsg <br />";
+        exit(2);
+    }
+    //close connection
+    $db->close();
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -58,16 +83,55 @@ value="Actor"> Actor
 <?php if (isset($actOrDir) && $actOrDir=="Director") echo "checked";?>
 value="Director"> Director <br>
 Actor/Director: <input type="text" name="human"> <br>
+<div class="form-group">
+Role (Only if Actor): <input type="text" name="role"> 
 Movie: <input type="text" name="movie"> <br>
-Role (Only if Actor): <input type="text" name="role"> <br>
 <br><input type="submit">
 <br>
+                <label for="movie">Movie Title:</label>
+                <span class="error">* <?php echo "$movieErr";?></span>
+                <select class="form-control" name="sMovie">
+                    <option value=""> </option>
+                    <?php
+                      if($rsMovie->num_rows>0){
+                        while($row = $rsMovie->fetch_assoc()){
+                    ?>
+                      <option value = <?php echo $row["id"] ?>> <?php echo $row["MovieName"] ?></option>
+                    <?php   }
+                      }else{
+                    ?>
+                      <option>None</option>
+                    <?php
+                      }
+                    ?>
+                </select>
+                
+                  <br>
+                  <label for="actor">Actor:</label>
+                  <span class="error">* <?php echo "$actorErr";?></span>
+                  <select class="form-control" name="actor">
+                    <option value=""> </option>
+                    <?php
+                      if($rsactor->num_rows>0){
+                        while($row = $rsactor->fetch_assoc()){
+                  ?>
+                      <option value = <?php echo $row["id"] ?>> <?php echo $row["ActorName"] ?></option>
+                    <?php   }
+                      }else{
+                    ?>
+                      <option>None</option>
+                    <?php
+                      }
+                    ?>
+                  </select>
+          
+</div>
 </form>
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST"){
     $occupation = $_REQUEST['actOrDir'];
-    $humanNameAndDob = $_REQUEST['human'];
-    $movieAndYear = $_REQUEST['movie'];
+    $humanNameAndDob = $_REQUEST['actor'];
+    $movieAndYear = $_REQUEST['sMovie'];
     $role = $_REQUEST['role'];
 
     //Connect PHP code with SQL

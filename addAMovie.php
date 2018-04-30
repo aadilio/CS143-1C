@@ -1,3 +1,27 @@
+<?php 
+    $db = new mysqli('localhost', 'cs143', '', 'CS143');
+  if($db->connect_errno > 0){
+      die('Unable to connect to database [' . $db->connect_error . ']');
+  }
+    $query="SELECT CONCAT(title,' ','(',year,')') AS MovieName, id FROM Movie;";
+    $rsmovie = $db->query($query);
+    //Basic error handling 
+    if(!$rsmovie){
+        $errmsg = $db->error;
+        print "Query failed: $errmsg <br />";
+        exit(1);
+    }
+    $query1="SELECT CONCAT(first, ' ', last,' ', '(', dob, ')')AS ActorName, id, dob FROM Actor ORDER BY last ASC;";
+    $rsactor = $db->query($query1);
+    //Basic error handling 
+    if(!$rsactor){
+        $errmsg = $db->error;
+        print "Query failed: $errmsg <br />";
+        exit(2);
+    }
+    //close connection
+    $db->close();
+?>
 <!DOCTYPE html>
 <html>
 
@@ -56,6 +80,40 @@ li a:hover:not(.active) {
 <br>
 <br> <br>
 <form method="post" action="<?php echo $_SERVER['PHP_SELF'];?>">
+  <label for="movie">Movie Title:</label>
+                <span class="error">* <?php echo "$movieErr";?></span>
+                <select class="form-control" name="movie">
+                    <option value=""> </option>
+                    <?php
+                      if($rsmovie->num_rows>0){
+                        while($row = $rsmovie->fetch_assoc()){
+                  ?>
+                      <option value = <?php echo $row["id"] ?>> <?php echo $row["MovieName"] ?></option>
+                    <?php   }
+                      }else{
+                    ?>
+                      <option>None</option>
+                    <?php
+                      }
+                    ?>
+                </select>
+  <label for="actor">Actor:</label>
+                  <span class="error">* <?php echo "$actorErr";?></span>
+                  <select class="form-control" name="actor">
+                    <option value=""> </option>
+                    <?php
+                      if($rsactor->num_rows>0){
+                        while($row = $rsactor->fetch_assoc()){
+                  ?>
+                      <option value = <?php echo $row["id"] ?>> <?php echo $row["ActorName"] ?></option>
+                    <?php   }
+                      }else{
+                    ?>
+                      <option>None</option>
+                    <?php
+                      }
+                    ?>
+                  </select>
 Title: <input type="text" name="title"> <br>
 Company: <input type="text" name="company"> <br>
 Year: <input type="text" name="year"> <br>
