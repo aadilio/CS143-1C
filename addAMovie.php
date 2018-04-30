@@ -147,8 +147,8 @@ Genre: <input type="text" name="genre"> <br>
               //echo $MaxID1;
         }
     }
-    $rs = mysqli_query($db,"SELECT id from MaxMovieID;");
-    foreach($rs as $key => $var){
+    $ry = mysqli_query($db,"SELECT id from MaxMovieID;");
+    foreach($ry as $key => $var){
        foreach($var as $col => $val){
           $MaxID2 = $val;
               //echo $MaxID2;
@@ -156,6 +156,7 @@ Genre: <input type="text" name="genre"> <br>
     }
     $MaxMovieID = max($MaxID1,$MaxID2);
     echo $MaxMovieID;
+    $rz = mysqli_query($db,"INSERT INTO MovieGenre (mid, genre) VALUES ($MaxMovieID, '$genre');");
     $rs = mysqli_query($db,"INSERT INTO Movie (id, title, year, rating, company) VALUES ($MaxMovieID+1,'$title', '$year', '$rating', '$company');");
     if($rs == true){
           //if（!mysqli_query($db,"UPDATE MaxPersonID SET id = $MaxDirectorID+1;")）{
