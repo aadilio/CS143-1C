@@ -97,28 +97,33 @@ li a:hover:not(.active) {
                       }
                     ?>
                 </select>
-  <label for="actor">Actor:</label>
-                  <span class="error">* <?php echo "$actorErr";?></span>
-                  <select class="form-control" name="actor">
-                    <option value=""> </option>
-                    <?php
-                      if($rsactor->num_rows>0){
-                        while($row = $rsactor->fetch_assoc()){
-                  ?>
-                      <option value = <?php echo $row["id"] ?>> <?php echo $row["ActorName"] ?></option>
-                    <?php   }
-                      }else{
-                    ?>
-                      <option>None</option>
-                    <?php
-                      }
-                    ?>
-                  </select>
 Title: <input type="text" name="title"> <br>
 Company: <input type="text" name="company"> <br>
 Year: <input type="text" name="year"> <br>
 MPAA Rating: <input type="text" name="rating"> <br>
 Genre: <input type="text" name="genre"> <br>
+<div class="form-group">
+                    <label>Genre:</label>
+                    <input type="checkbox" name="genre[]" value="Action">Action
+                    <input type="checkbox" name="genre[]" value="Adult">Adult
+                    <input type="checkbox" name="genre[]" value="Adventure">Adventure
+                    <input type="checkbox" name="genre[]" value="Animation">Animation
+                    <input type="checkbox" name="genre[]" value="Comedy">Comedy
+                    <input type="checkbox" name="genre[]" value="Crime">Crime
+                    <input type="checkbox" name="genre[]" value="Documentary">Documentary
+                    <input type="checkbox" name="genre[]" value="Drama">Drama
+                    <input type="checkbox" name="genre[]" value="Family">Family
+                    <input type="checkbox" name="genre[]" value="Fantasy">Fantasy
+                    <input type="checkbox" name="genre[]" value="Horror">Horror
+                    <input type="checkbox" name="genre[]" value="Musical">Musical
+                    <input type="checkbox" name="genre[]" value="Mystery">Mystery
+                    <input type="checkbox" name="genre[]" value="Romance">Romance
+                    <input type="checkbox" name="genre[]" value="Sci-Fi">Sci-Fi
+                    <input type="checkbox" name="genre[]" value="Short">Short
+                    <input type="checkbox" name="genre[]" value="Thriller">Thriller
+                    <input type="checkbox" name="genre[]" value="War">War
+                    <input type="checkbox" name="genre[]" value="Western">Western
+                </div>
 <br><input type="submit">
 <br>
 </form>
@@ -147,8 +152,8 @@ Genre: <input type="text" name="genre"> <br>
               //echo $MaxID1;
         }
     }
-    $ry = mysqli_query($db,"SELECT id from MaxMovieID;");
-    foreach($ry as $key => $var){
+    $rs = mysqli_query($db,"SELECT id from MaxMovieID;");
+    foreach($rs as $key => $var){
        foreach($var as $col => $val){
           $MaxID2 = $val;
               //echo $MaxID2;
@@ -156,7 +161,6 @@ Genre: <input type="text" name="genre"> <br>
     }
     $MaxMovieID = max($MaxID1,$MaxID2);
     echo $MaxMovieID;
-    $rz = mysqli_query($db,"INSERT INTO MovieGenre (mid, genre) VALUES ($MaxMovieID, '$genre');");
     $rs = mysqli_query($db,"INSERT INTO Movie (id, title, year, rating, company) VALUES ($MaxMovieID+1,'$title', '$year', '$rating', '$company');");
     if($rs == true){
           //if（!mysqli_query($db,"UPDATE MaxPersonID SET id = $MaxDirectorID+1;")）{
