@@ -49,6 +49,7 @@ li a:hover:not(.active) {
   <li><a href="addAnActor.php">Add New Actor/Director</a></li>
   <li><a href="addAMovie.php">Add Movie </a></li>
   <li><a href="addMARelation.php">Add Movie/Actor Relation </a></li>
+  <li><a href="addMDRelation.php">Add Movie/Director Relation </a></li>
   <li><a href="addComments.php">Add Comment</a></li>
 </ul>
 
@@ -61,7 +62,7 @@ li a:hover:not(.active) {
 Title: <input type="text" name="title"> <br>
 </form>
 //Should make this a drop down menu
-Comment: 
+Comment:
 <form method="post" action="<?php echo $_SERVER['PHP_SELF'];?>">
 <textarea name="query" cols="60" rows="8" style="margin: 0px; width: 590px; height: 269px;"></textarea>
 <br><input type="submit">
@@ -93,7 +94,7 @@ Comment:
     }
     $select.='</SELECT>'; */
 
-    
+
     if(mysqli_query($db,"INSERT INTO Director (id,last, first, dob, dod) VALUES ($MaxDirectorID+1,'$firstName', '$lastName', '$dob', '$dod');"))
     {
       mysqli_query($db,"INSERT INTO MaxPersonID(id) VALUES ($MaxDirectorID+1);");

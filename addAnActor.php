@@ -41,6 +41,7 @@ li a:hover:not(.active) {
   <li><a href="addAnActor.php">Add New Actor/Director</a></li>
   <li><a href="addAMovie.php">Add Movie </a></li>
   <li><a href="addMARelation.php">Add Movie/Actor Relation </a></li>
+  <li><a href="addMDRelation.php">Add Movie/Director Relation </a></li>
   <li><a href="addComments.php">Add Comment</a></li>
 </ul>
 

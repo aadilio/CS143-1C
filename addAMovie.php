@@ -1,11 +1,11 @@
-<?php 
-    $db = new mysqli('localhost', 'cs143', '', 'CS143');
+<?php
+    $db = new mysqli('localhost', 'cs143', '', 'TEST');
   if($db->connect_errno > 0){
       die('Unable to connect to database [' . $db->connect_error . ']');
   }
     $query="SELECT CONCAT(title,' ','(',year,')') AS MovieName, id FROM Movie;";
     $rsmovie = $db->query($query);
-    //Basic error handling 
+    //Basic error handling
     if(!$rsmovie){
         $errmsg = $db->error;
         print "Query failed: $errmsg <br />";
@@ -13,7 +13,7 @@
     }
     $query1="SELECT CONCAT(first, ' ', last,' ', '(', dob, ')')AS ActorName, id, dob FROM Actor ORDER BY last ASC;";
     $rsactor = $db->query($query1);
-    //Basic error handling 
+    //Basic error handling
     if(!$rsactor){
         $errmsg = $db->error;
         print "Query failed: $errmsg <br />";
@@ -68,6 +68,7 @@ li a:hover:not(.active) {
   <li><a href="addAnActor.php">Add New Actor/Director</a></li>
   <li><a href="addAMovie.php">Add Movie </a></li>
   <li><a href="addMARelation.php">Add Movie/Actor Relation </a></li>
+  <li><a href="addMDRelation.php">Add Movie/Director Relation </a></li>
   <li><a href="addComments.php">Add Comment</a></li>
 </ul>
 

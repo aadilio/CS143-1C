@@ -1,3 +1,5 @@
+
+
 <?php
     $db = new mysqli('localhost', 'cs143', '', 'TEST');
   if($db->connect_errno > 0){
@@ -73,11 +75,10 @@ li a:hover:not(.active) {
 
 
 <div class='A' style="margin-left:25%;padding:1px 16px;height:1000px;">
-<h1>Add an Movie/Actor Relation</h1>
-<br>Pick an actor to relate with a movie:
+<h1>Add an Movie/Director Relation</h1>
+<br>Pick a director to relate with a movie:
 <br> <br>
 <form method="post" action="<?php echo $_SERVER['PHP_SELF'];?>">
-Role: <input type="text" name="role"><br>
 <label for="movie">Movie Title:</label>
                 <span class="error">* <?php echo "$movieErr";?></span>
                 <select class="form-control" name="sMovie">
@@ -97,15 +98,15 @@ Role: <input type="text" name="role"><br>
                 </select>
 
                   <br>
-                  <label for="actor">Actor:</label>
-                  <span class="error">* <?php echo "$actorErr";?></span>
-                  <select class="form-control" name="actor">
+                  <label for="actor">Director:</label>
+                  <span class="error">* <?php echo "$dirErr";?></span>
+                  <select class="form-control" name="director">
                     <option value=""> </option>
                     <?php
-                      if($rsactor->num_rows>0){
-                        while($row = $rsactor->fetch_assoc()){
+                      if($rsdirector->num_rows>0){
+                        while($row = $rsdirector->fetch_assoc()){
                   ?>
-                      <option value = <?php echo $row["id"] ?>> <?php echo $row["ActorName"] ?></option>
+                      <option value = <?php echo $row["id"] ?>> <?php echo $row["DirectorName"] ?></option>
                     <?php   }
                       }else{
                     ?>
@@ -122,9 +123,8 @@ Role: <input type="text" name="role"><br>
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST"){
   $movie = $_REQUEST['sMovie'];
-  $humanNameAndDob = $_REQUEST['actor'];
-  $role = $_REQUEST['role'];
-  $occupation = "Actor";
+  $humanNameAndDob = $_REQUEST['director'];
+  $occupation = "Director";
     //Connect PHP code with SQL
     $db = new mysqli('localhost', 'cs143', '', 'TEST');
     if($db->connect_errno > 0)
@@ -193,43 +193,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 
     }
 
-    echo $movieName;
-    echo $firstName;
-    echo "THIS TEST";
-    
-    if($occupation == "Actor")
+    if($occupation == "Director")
     {
-        //$rs = $db->query("SELECT id from Actor ORDER BY id DESC LIMIT 1;");
-    	$rs = mysqli_query($db,"SELECT id from Actor WHERE first = $firstName AND last = $lastName AND dob = $dob;");
+
+      $rs = mysqli_query($db,"SELECT id from Director WHERE first = $firstName AND last = $lastName AND dob = $dob;");
       foreach($rs as $key => $var){
           foreach($var as $col => $val) {
-              $aID = $val;
+              $dID = $val;
               //echo $MaxID1;
           }
       }
 
-
-	    $rs = mysqli_query($db,"SELECT id from Movie WHERE title = $movieName AND year = $movieYear;");
+      $rs = mysqli_query($db,"SELECT id from Movie WHERE title = $movieName AND year = $movieYear;");
       foreach($rs as $key => $var){
           foreach($var as $col => $val) {
               $mID = $val;
               //echo $MaxID1;
           }
       }
-
-      $rz = mysqli_query($db,"INSERT INTO MovieActor (mid, aid, role) VALUES ($mID, $aID, $role);");
-
-    }
-    else
-    {
-      if($role != NULL)
-      {
-        echo "Can't make relation between director and movie if there is a role";
-      }
-
-      $rs = mysqli_query($db,"SELECT id from Director WHERE first = $firstName AND last = $lastName AND dob = $dob;");
-
-      $ry = mysqli_query($db,"SELECT id from Movie WHERE title = $movieName AND year = $movieYear;");
 
       $rz = mysqli_query($db,"INSERT INTO MovieDirector (mid, did) VALUES ($ry, $rs);");
 
