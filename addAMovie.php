@@ -65,10 +65,10 @@ li a:hover:not(.active) {
 
 <ul>
   <li><a class="active" href="addAnActor.php">Main Page</a></li>
-  <li><a href="addAnActor.php">Add Actor/Director</a></li>
+  <li><a href="addAnActor.php">Add New Actor/Director</a></li>
   <li><a href="addAMovie.php">Add Movie </a></li>
-  <li><a href="addARelation.php">Add Movie Relation </a></li>
-  <li><a href="addComments.php">Add comment</a></li>
+  <li><a href="addMARelation.php">Add Movie/Actor Relation </a></li>
+  <li><a href="addComments.php">Add Comment</a></li>
 </ul>
 
 
@@ -80,28 +80,10 @@ li a:hover:not(.active) {
 <br>
 <br> <br>
 <form method="post" action="<?php echo $_SERVER['PHP_SELF'];?>">
-  <label for="movie">Movie Title:</label>
-                <span class="error">* <?php echo "$movieErr";?></span>
-                <select class="form-control" name="movie">
-                    <option value=""> </option>
-                    <?php
-                      if($rsmovie->num_rows>0){
-                        while($row = $rsmovie->fetch_assoc()){
-                  ?>
-                      <option value = <?php echo $row["id"] ?>> <?php echo $row["MovieName"] ?></option>
-                    <?php   }
-                      }else{
-                    ?>
-                      <option>None</option>
-                    <?php
-                      }
-                    ?>
-                </select>
 Title: <input type="text" name="title"> <br>
 Company: <input type="text" name="company"> <br>
 Year: <input type="text" name="year"> <br>
 MPAA Rating: <input type="text" name="rating"> <br>
-Genre: <input type="text" name="genre"> <br>
 <div class="form-group">
                     <label>Genre:</label>
                     <input type="checkbox" name="genre[]" value="Action">Action
@@ -136,7 +118,7 @@ Genre: <input type="text" name="genre"> <br>
     $company = $_REQUEST['company'];
     $year = $_REQUEST['year'];
     $rating = $_REQUEST['rating'];
-    $genre = $_REQUEST['genre'];
+    $genre = $_REQUEST['genre[]'];
 
     //Connect PHP code with SQL
     $db = new mysqli('localhost', 'cs143', '', 'TEST');

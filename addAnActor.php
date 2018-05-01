@@ -38,15 +38,16 @@ li a:hover:not(.active) {
 
 <ul>
   <li><a class="active" href="addAnActor.php">Main Page</a></li>
-  <li><a href="addAnActor.php">Add Actor/Director</a></li>
+  <li><a href="addAnActor.php">Add New Actor/Director</a></li>
   <li><a href="addAMovie.php">Add Movie </a></li>
-  <li><a href="addARelation.php">Add Movie Relation </a></li>
-  <li><a href="addComments.php">Add comment</a></li>
+  <li><a href="addMARelation.php">Add Movie/Actor Relation </a></li>
+  <li><a href="addComments.php">Add Comment</a></li>
 </ul>
 
 
+
 <div class='A' style="margin-left:25%;padding:1px 16px;height:1000px;">
-<h1>Add an actor</h1>
+<h1>Add new actor/director</h1>
 <br>Type an Actor's info in the following boxes:
 <br>Example: Tom Hanks M 1998-03-11 N/A
 <br> <br>
