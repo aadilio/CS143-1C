@@ -196,7 +196,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
     echo $movieName;
     echo $firstName;
     echo "THIS TEST";
-    
+
     if($occupation == "Actor")
     {
         //$rs = $db->query("SELECT id from Actor ORDER BY id DESC LIMIT 1;");
@@ -217,21 +217,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
           }
       }
 
-      $rz = mysqli_query($db,"INSERT INTO MovieActor (mid, aid, role) VALUES ($mID, $aID, $role);");
-
-    }
-    else
-    {
-      if($role != NULL)
-      {
-        echo "Can't make relation between director and movie if there is a role";
-      }
-
-      $rs = mysqli_query($db,"SELECT id from Director WHERE first = $firstName AND last = $lastName AND dob = $dob;");
-
-      $ry = mysqli_query($db,"SELECT id from Movie WHERE title = $movieName AND year = $movieYear;");
-
-      $rz = mysqli_query($db,"INSERT INTO MovieDirector (mid, did) VALUES ($ry, $rs);");
+      $rz = mysqli_query($db,"INSERT INTO MovieActor (mid, aid, role) VALUES ($mID, $aID, '$role');");
 
     }
     //mysqli_close($db);

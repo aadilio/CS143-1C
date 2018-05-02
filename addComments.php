@@ -59,7 +59,10 @@ li a:hover:not(.active) {
 <br>
 <br> <br>
 <form method="post" action="<?php echo $_SERVER['PHP_SELF'];?>">
-Title: <input type="text" name="title"> <br>
+Your Name: <input type="text" name="name"> <br>
+Movie Title: <input type="text" name="title"> <br>
+Rating: <input type="text" name="title"> <br>
+
 </form>
 //Should make this a drop down menu
 Comment:
@@ -72,7 +75,10 @@ Comment:
   if ($_SERVER["REQUEST_METHOD"] == "POST")
   {
     $title = $_REQUEST['title'];
+    $name = $_REQUEST['name'];
     $comment = $_REQUEST['comment'];
+    $rating = $_REQUEST['rating'];
+    //Need to get the current time
 
     //Connect PHP code with SQL
     $db = new mysqli('localhost', 'cs143', '', 'TEST');
@@ -93,15 +99,23 @@ Comment:
       }
     }
     $select.='</SELECT>'; */
-
-
-    if(mysqli_query($db,"INSERT INTO Director (id,last, first, dob, dod) VALUES ($MaxDirectorID+1,'$firstName', '$lastName', '$dob', '$dod');"))
-    {
-      mysqli_query($db,"INSERT INTO MaxPersonID(id) VALUES ($MaxDirectorID+1);");
-       echo "Successfully added!";
-    }else{
-      echo "No insert happened!";
+    $rs = mysqli_query($db, "SELECT CURRENT_TIMESTAMP");
+    foreach($rs as $key => $var){
+        foreach($var as $col => $val) {
+            $theTime = $val;
+            //echo $MaxID1;
+        }
     }
+    $rs = mysqli_query($db, "SELECT mid FROM Movie WHERE title = $title;");
+    foreach($rs as $key => $var){
+        foreach($var as $col => $val) {
+            $mID = $val;
+            //echo $MaxID1;
+        }
+    }
+
+    mysqli_query($db, "INSERT INTO Review (name, time, mid, rating, comment) VALUES ('$name', $theTime, $mID, $rating, '$comment');");
+
 
   }
 ?>

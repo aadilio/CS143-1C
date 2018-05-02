@@ -143,9 +143,10 @@ MPAA Rating: <input type="text" name="rating"> <br>
         }
     }
     $MaxMovieID = max($MaxID1,$MaxID2);
-    echo $MaxMovieID;
+    //echo $MaxMovieID;
     $rs = mysqli_query($db,"INSERT INTO Movie (id, title, year, rating, company) VALUES ($MaxMovieID+1,'$title', '$year', '$rating', '$company');");
-    if($rs == true){
+    if($rs == true)
+    {
           //if（!mysqli_query($db,"UPDATE MaxPersonID SET id = $MaxDirectorID+1;")）{
           //	mysqli_query($db,"INSERT INTO MaxPersonID(id) VALUES ($MaxDirectorID+1);")
           //}
@@ -163,9 +164,11 @@ MPAA Rating: <input type="text" name="rating"> <br>
         mysqli_query($db,"UPDATE MaxMovieID SET id = $MaxMovieID+1;");
       }
         echo "Successfully added!";
-      }else{
-        echo "No insert happened!";
-      }
+    }
+    else
+    {
+      echo "No insert happened!";
+    }
 
 
   }

@@ -212,7 +212,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
           }
       }
 
-      $rz = mysqli_query($db,"INSERT INTO MovieDirector (mid, did) VALUES ($ry, $rs);");
+      $rz = mysqli_query($db,"INSERT INTO MovieDirector (mid, did) VALUES ($mID, $dID);");
 
     }
     //mysqli_close($db);
