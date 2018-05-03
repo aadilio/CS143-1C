@@ -43,6 +43,8 @@ li a:hover:not(.active) {
   <li><a href="addMARelation.php">Add Movie/Actor Relation </a></li>
   <li><a href="addMDRelation.php">Add Movie/Director Relation </a></li>
   <li><a href="addComments.php">Add Comment</a></li>
+  <li><a href="search.php">Search</a></li>
+
 </ul>
 
 
