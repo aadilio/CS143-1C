@@ -63,14 +63,14 @@ li a:hover:not(.active) {
 </style>
 <body>
 
-<ul>
+<<ul>
   <li><a class="active" href="addAnActor.php">Main Page</a></li>
   <li><a href="addAnActor.php">Add New Actor/Director</a></li>
   <li><a href="addAMovie.php">Add Movie </a></li>
   <li><a href="addMARelation.php">Add Movie/Actor Relation </a></li>
+  <li><a href="addMDRelation.php">Add Movie/Director Relationt</a></li>
   <li><a href="addComments.php">Add Comment</a></li>
 </ul>
-
 
 
 <div class='A' style="margin-left:25%;padding:1px 16px;height:1000px;">

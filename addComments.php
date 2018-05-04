@@ -1,3 +1,18 @@
+<<?php
+  //connection to database
+  include('connect.php');
+  $query="SELECT CONCAT(title,' ','(',year,')') AS MovieName, id FROM Movie;";
+  $rsmovie = $db->query($query);
+  //Basic error handling 
+  if(!$rsmovie){
+    $errmsg = $db->error;
+    print "Query failed: $errmsg <br />";
+    exit(1);
+  }
+  //close connection
+  $db->close();
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -49,6 +64,7 @@ li a:hover:not(.active) {
   <li><a href="addAnActor.php">Add New Actor/Director</a></li>
   <li><a href="addAMovie.php">Add Movie </a></li>
   <li><a href="addMARelation.php">Add Movie/Actor Relation </a></li>
+  <li><a href="addMDRelation.php">Add Movie/Director Relationt</a></li>
   <li><a href="addComments.php">Add Comment</a></li>
 </ul>
 
@@ -58,9 +74,26 @@ li a:hover:not(.active) {
 <br>
 <br> <br>
 <form method="post" action="<?php echo $_SERVER['PHP_SELF'];?>">
-Title: <input type="text" name="title"> <br>
+<div class="form-group">
+                <label for="movie">Movie Title:</label>
+                <span class="error">* <?php echo "$movieErr";?></span>
+                <select class="form-control" name="movie">
+                    <option value=""> </option>
+                    <?php
+                      if($rsmovie->num_rows>0){
+                        while($row = $rsmovie->fetch_assoc()){
+                  ?>
+                      <option value = <?php echo $row["id"] ?>> <?php echo $row["MovieName"] ?></option>
+                    <?php   }
+                      }else{
+                    ?>
+                      <option>None</option>
+                    <?php
+                      }
+                    ?>
+                </select>
+                </div>
 </form>
-//Should make this a drop down menu
 Comment: 
 <form method="post" action="<?php echo $_SERVER['PHP_SELF'];?>">
 <textarea name="query" cols="60" rows="8" style="margin: 0px; width: 590px; height: 269px;"></textarea>
@@ -68,7 +101,8 @@ Comment:
 </form>
 
 <?php
-  if ($_SERVER["REQUEST_METHOD"] == "POST")
+/*
+  )
   {
     $title = $_REQUEST['title'];
     $comment = $_REQUEST['comment'];
@@ -80,29 +114,38 @@ Comment:
       die('Unable to connect to database [' . $db->connect_error . ']');
     }
 
-    //Creating a drop down menu of all of the movies
-    /*$query = ("SELECT * FROM Movie");
-    $sql = $db->query($query);
-    if(mysql_num_rows($sql))
-    {
-      $select= '<SELECT NAME="select">';
-      while($rs=mysql_fetch_array($sql))
-      {
-        $select.='<option value="'.$rs['title'].'">'.'</option>';
-      }
-    }
-    $select.='</SELECT>'; */
-
     
     if(mysqli_query($db,"INSERT INTO Director (id,last, first, dob, dod) VALUES ($MaxDirectorID+1,'$firstName', '$lastName', '$dob', '$dod');"))
     {
       mysqli_query($db,"INSERT INTO MaxPersonID(id) VALUES ($MaxDirectorID+1);");
        echo "Successfully added!";
     }else{
-      echo "No insert happened!";
+      echo "No insert happened!";c
     }
 
   }
+*/
+
+            if ($_SERVER["REQUEST_METHOD"] == "POST"){
+                    //connection to database
+                    $db = new mysqli('localhost', 'cs143', '', 'CS143');
+                    if($db->connect_errno > 0){
+                      die('Unable to connect to database [' . $db->connect_error . ']');
+                    }
+                    echo $movie;
+                    echo 'ACCC\n';
+                    $query= "INSERT INTO Review() VALUES ('$name', CURRENT_TIMESTAMP(), $movie, $rating, '$comment');";
+                    $rs = $db->query($query);
+                    //Basic error handling 
+                    if(!$rs){
+                        $errmsg = $db->error;
+                        print "Query failed: $errmsg <br />";
+                        exit(3);
+                    }else{
+                        echo "Succefully Inserted 1 comment!<br>";
+                        echo " <a href=' MovieInfo.php?mid=$movie '>Click this to go back to see the movie</a>"; 
+                    }
+                }
 ?>
 </div>
 

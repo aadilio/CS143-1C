@@ -1,26 +1,24 @@
-<?php 
-    $db = new mysqli('localhost', 'cs143', '', 'CS143');
-  if($db->connect_errno > 0){
-      die('Unable to connect to database [' . $db->connect_error . ']');
+<<?php
+  //connection to database
+  include('connect.php');
+  $query="SELECT CONCAT(title,' ','(',year,')') AS MovieName, id FROM Movie;";
+  $rsmovie = $db->query($query);
+  //Basic error handling 
+  if(!$rsmovie){
+    $errmsg = $db->error;
+    print "Query failed: $errmsg <br />";
+    exit(1);
   }
-    $query="SELECT CONCAT(title,' ','(',year,')') AS MovieName, id FROM Movie;";
-    $rsMovie = $db->query($query);
-    //Basic error handling 
-    if(!$rsMovie){
-        $errmsg = $db->error;
-        print "Query failed: $errmsg <br />";
-        exit(1);
-    }
-    $query1="SELECT CONCAT(first, ' ', last,' ', '(', dob, ')')AS ActorName, id, dob FROM Actor ORDER BY last ASC;";
-    $rsactor = $db->query($query1);
-    //Basic error handling 
-    if(!$rsactor){
-        $errmsg = $db->error;
-        print "Query failed: $errmsg <br />";
-        exit(2);
-    }
-    //close connection
-    $db->close();
+  $query1="SELECT CONCAT(first, ' ',last, ' ', '(', dob, ')')AS DirectorName, id, dob FROM Director ORDER BY last ASC;";
+  $rsdirector = $db->query($query1);
+  //Basic error handling 
+  if(!$rsdirector){
+    $errmsg = $db->error;
+    print "Query failed: $errmsg <br />";
+    exit(2);
+  }
+  //close connection
+  $db->close();
 ?>
 
 <!DOCTYPE html>
@@ -71,20 +69,21 @@ li a:hover:not(.active) {
 </ul>
 
 
+
 <div class='A' style="margin-left:25%;padding:1px 16px;height:1000px;">
 <h1>Add an Movie/Actor Relation</h1>
 <br>Pick an actor to relate with a movie:
 <br> <br>
 <form method="post" action="<?php echo $_SERVER['PHP_SELF'];?>">
-Role: <input type="text" name="role"><br>
-<label for="movie">Movie Title:</label>
+<div class="form-group">
+                <label for="movie">Movie Title:</label>
                 <span class="error">* <?php echo "$movieErr";?></span>
-                <select class="form-control" name="sMovie">
+                <select class="form-control" name="movie">
                     <option value=""> </option>
                     <?php
-                      if($rsMovie->num_rows>0){
-                        while($row = $rsMovie->fetch_assoc()){
-                    ?>
+                      if($rsmovie->num_rows>0){
+                        while($row = $rsmovie->fetch_assoc()){
+                  ?>
                       <option value = <?php echo $row["id"] ?>> <?php echo $row["MovieName"] ?></option>
                     <?php   }
                       }else{
@@ -94,17 +93,19 @@ Role: <input type="text" name="role"><br>
                       }
                     ?>
                 </select>
+                </div>
                 
-                  <br>
-                  <label for="actor">Actor:</label>
-                  <span class="error">* <?php echo "$actorErr";?></span>
-                  <select class="form-control" name="actor">
+<br>
+<div class="form-group">
+                  <label for="director">Director:</label>
+                  <span class="error">* <?php echo "$directorErr";?></span>
+                  <select class="form-control" name="director">
                     <option value=""> </option>
                     <?php
-                      if($rsactor->num_rows>0){
-                        while($row = $rsactor->fetch_assoc()){
+                      if($rsdirector->num_rows>0){
+                        while($row = $rsdirector->fetch_assoc()){
                   ?>
-                      <option value = <?php echo $row["id"] ?>> <?php echo $row["ActorName"] ?></option>
+                      <option value = <?php echo $row["id"] ?>> <?php echo $row["DirectorName"] ?></option>
                     <?php   }
                       }else{
                     ?>
@@ -113,7 +114,7 @@ Role: <input type="text" name="role"><br>
                       }
                     ?>
                   </select>
-<br><input type="submit">
+</div>
 </div>
 </form>         
 
@@ -203,9 +204,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
     if($occupation == "Actor")
     {
         //$rs = $db->query("SELECT id from Actor ORDER BY id DESC LIMIT 1;");
-    	$rs = mysqli_query($db,"SELECT id from Actor WHERE first = $firstName AND last = $lastName AND dob = $dob;");
+        $rs = mysqli_query($db,"SELECT id from Actor WHERE first = $firstName AND last = $lastName AND dob = $dob;");
 
-	    $ry = mysqli_query($db,"SELECT id from Movie WHERE title = $movieName AND year = $movieYear;");
+        $ry = mysqli_query($db,"SELECT id from Movie WHERE title = $movieName AND year = $movieYear;");
 
       $rz = mysqli_query($db,"INSERT INTO MovieActor (mid, aid, role) VALUES ($ry, $rs, $role);");
     }
