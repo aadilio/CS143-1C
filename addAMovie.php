@@ -1,11 +1,11 @@
-<?php
-    $db = new mysqli('localhost', 'cs143', '', 'TEST');
+<?php 
+    $db = new mysqli('localhost', 'cs143', '', 'CS143');
   if($db->connect_errno > 0){
       die('Unable to connect to database [' . $db->connect_error . ']');
   }
     $query="SELECT CONCAT(title,' ','(',year,')') AS MovieName, id FROM Movie;";
     $rsmovie = $db->query($query);
-    //Basic error handling
+    //Basic error handling 
     if(!$rsmovie){
         $errmsg = $db->error;
         print "Query failed: $errmsg <br />";
@@ -13,7 +13,7 @@
     }
     $query1="SELECT CONCAT(first, ' ', last,' ', '(', dob, ')')AS ActorName, id, dob FROM Actor ORDER BY last ASC;";
     $rsactor = $db->query($query1);
-    //Basic error handling
+    //Basic error handling 
     if(!$rsactor){
         $errmsg = $db->error;
         print "Query failed: $errmsg <br />";
@@ -68,14 +68,8 @@ li a:hover:not(.active) {
   <li><a href="addAnActor.php">Add New Actor/Director</a></li>
   <li><a href="addAMovie.php">Add Movie </a></li>
   <li><a href="addMARelation.php">Add Movie/Actor Relation </a></li>
-<<<<<<< HEAD
   <li><a href="addMDRelation.php">Add Movie/Director Relationt</a></li>
-=======
-  <li><a href="addMDRelation.php">Add Movie/Director Relation </a></li>
->>>>>>> 3e036920861da8fc909e29592aaea59bf1d8812c
   <li><a href="addComments.php">Add Comment</a></li>
-  <li><a href="search.php">Search</a></li>
-
 </ul>
 
 
@@ -148,10 +142,9 @@ MPAA Rating: <input type="text" name="rating"> <br>
         }
     }
     $MaxMovieID = max($MaxID1,$MaxID2);
-    //echo $MaxMovieID;
+    echo $MaxMovieID;
     $rs = mysqli_query($db,"INSERT INTO Movie (id, title, year, rating, company) VALUES ($MaxMovieID+1,'$title', '$year', '$rating', '$company');");
-    if($rs == true)
-    {
+    if($rs == true){
           //if（!mysqli_query($db,"UPDATE MaxPersonID SET id = $MaxDirectorID+1;")）{
           //	mysqli_query($db,"INSERT INTO MaxPersonID(id) VALUES ($MaxDirectorID+1);")
           //}
@@ -169,11 +162,9 @@ MPAA Rating: <input type="text" name="rating"> <br>
         mysqli_query($db,"UPDATE MaxMovieID SET id = $MaxMovieID+1;");
       }
         echo "Successfully added!";
-    }
-    else
-    {
-      echo "No insert happened!";
-    }
+      }else{
+        echo "No insert happened!";
+      }
 
 
   }
