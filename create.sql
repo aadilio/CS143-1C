@@ -1,5 +1,5 @@
 CREATE TABLE Movie(
-  id INT PRIMARY KEY, # This is a primary key as it as a trait that would be specific to each Movie
+  id INT PRIMARY KEY,  # This is a primary key as it as a trait that would be specific to each Movie
   title VARCHAR(100),
   year INT,
   rating VARCHAR(10),
@@ -27,9 +27,9 @@ CREATE TABLE Director(
 ) ENGINE = INNODB;
 
 CREATE TABLE MovieGenre(
-  mid INT PRIMARY KEY,
+  mid INT,
   FOREIGN KEY(mid) REFERENCES Movie(id), # This is a foreign key as the mid can be used to identify the Movie(id)
-  genre VARCHAR(20) INT PRIMARY KEY
+  genre VARCHAR(20)
 ) ENGINE = INNODB;
 
 CREATE TABLE MovieDirector(
