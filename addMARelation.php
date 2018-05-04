@@ -1,11 +1,11 @@
-<?php 
+<?php
     $db = new mysqli('localhost', 'cs143', '', 'CS143');
   if($db->connect_errno > 0){
       die('Unable to connect to database [' . $db->connect_error . ']');
   }
     $query="SELECT CONCAT(title,' ','(',year,')') AS MovieName, id FROM Movie;";
     $rsMovie = $db->query($query);
-    //Basic error handling 
+    //Basic error handling
     if(!$rsMovie){
         $errmsg = $db->error;
         print "Query failed: $errmsg <br />";
@@ -13,7 +13,7 @@
     }
     $query1="SELECT CONCAT(first, ' ', last,' ', '(', dob, ')')AS ActorName, id, dob FROM Actor ORDER BY last ASC;";
     $rsactor = $db->query($query1);
-    //Basic error handling 
+    //Basic error handling
     if(!$rsactor){
         $errmsg = $db->error;
         print "Query failed: $errmsg <br />";
@@ -61,14 +61,16 @@ li a:hover:not(.active) {
 </style>
 <body>
 
-<ul>
-  <li><a class="active" href="addAnActor.php">Main Page</a></li>
-  <li><a href="addAnActor.php">Add New Actor/Director</a></li>
-  <li><a href="addAMovie.php">Add Movie </a></li>
-  <li><a href="addMARelation.php">Add Movie/Actor Relation </a></li>
-  <li><a href="addMDRelation.php">Add Movie/Director Relationt</a></li>
-  <li><a href="addComments.php">Add Comment</a></li>
-</ul>
+  <ul>
+    <li><a class="active" href="addAnActor.php">Main Page</a></li>
+    <li><a href="addAnActor.php">Add New Actor/Director</a></li>
+    <li><a href="addAMovie.php">Add Movie </a></li>
+    <li><a href="addMARelation.php">Add Movie/Actor Relation </a></li>
+    <li><a href="addMDRelation.php">Add Movie/Director Relation </a></li>
+    <li><a href="addComments.php">Add Comment</a></li>
+    <li><a href="searchActor.php">Search Actor</a></li>
+    <li><a href="searchMovie.php">Search Movie</a></li>
+  </ul>
 
 
 <div class='A' style="margin-left:25%;padding:1px 16px;height:1000px;">
@@ -79,7 +81,7 @@ li a:hover:not(.active) {
 Role: <input type="text" name="role"><br>
 <label for="movie">Movie Title:</label>
                 <span class="error">* <?php echo "$movieErr";?></span>
-                <select class="form-control" name="sMovie">
+                <select class="form-control" name="movieID">
                     <option value=""> </option>
                     <?php
                       if($rsMovie->num_rows>0){
@@ -94,7 +96,7 @@ Role: <input type="text" name="role"><br>
                       }
                     ?>
                 </select>
-                
+
                   <br>
                   <label for="actor">Actor:</label>
                   <span class="error">* <?php echo "$actorErr";?></span>
@@ -114,116 +116,29 @@ Role: <input type="text" name="role"><br>
                     ?>
                   </select>
 <br><input type="submit">
-</div>
-</form>         
+</form>
 
 
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST"){
-  $movie = $_REQUEST['sMovie'];
-  $actor = $_REQUEST['acotr'];
+  //echo 'ASDFASDF';
+  $movieID = $_REQUEST['movieID'];
+  $actorID = $_REQUEST['actor'];
   $role = $_REQUEST['role'];
-    //$occupation = $_REQUEST['actOrDir'];
-    //$sex = $_REQUEST['maleOrFemale'];
-    //$humanNameAndDob = $_REQUEST['actor'];
-    //$movieAndYear = $_REQUEST['sMovie'];
-    //$role = $_REQUEST['role'];
-    //$fName = $_REQUEST['firstNmae'];
-    //$lName = $_REQUEST['lastNmae'];
-    //$dob = $_REQUEST['dob'];
-    //$dod = $_REQUEST['dod'];
-    //Connect PHP code with SQL
-    $db = new mysqli('localhost', 'cs143', '', 'TEST');
-    if($db->connect_errno > 0)
-    {
-      die('Unable to connect to database [' . $db->connect_error . ']');
-    }
-    //echo $sex;
-    //Inserting the submitted values into the Actor/Director table
-    $strlen = strlen($humanNameAndDob);
-    $firstName = "";
-    $lastName = "";
-    $dob = "";
-    $movieName = "";
-    $movieYear;
-
-    $counter=0; //0 means on first name, 1 means second, and 2 means dob
-    for($i = 0; $i<$strlen; $i++)
-    {
-        if($humanNameAndDob[$i] == " ")
-        {
-          if($counter == 0)
-          {
-            $counter++;
-          }
-          else if($counter == 1)
-          {
-            $counter++;
-          }
-          else
-          {
-            break;
-          }
-          continue;
-        }
-        if($counter == 0)
-        {
-          $firstName .= $humanNameAndDob[$i];
-        }
-        else if($counter == 1)
-        {
-          $lastName .= $humanNameAndDob[$i];
-        }
-        else
-        {
-          $dob .= $humanNameAndDob[$i];
-        }
-    }
-
-    //Split movie into parts
-    $counter=0;
-    $strlen = strlen($movieAndYear);
-    for($i = 0; $i<$strlen; $i++)
-    {
-      if($movieAndYear[$i] == "(" && (($movieAndYear[$i+1] == 1) || ($movieAndYear[$i] == 2)))
-      {
-        $counter++;
-        continue;
-      }
-      if($counter)
-      {
-        $movieYear .= $movieAndYear[$i];
-      }
-      else {
-        $movieName .= $movieAndYear[$i];
-      }
-
-    }
-
-    if($occupation == "Actor")
-    {
-        //$rs = $db->query("SELECT id from Actor ORDER BY id DESC LIMIT 1;");
-    	$rs = mysqli_query($db,"SELECT id from Actor WHERE first = $firstName AND last = $lastName AND dob = $dob;");
-
-	    $ry = mysqli_query($db,"SELECT id from Movie WHERE title = $movieName AND year = $movieYear;");
-
-      $rz = mysqli_query($db,"INSERT INTO MovieActor (mid, aid, role) VALUES ($ry, $rs, $role);");
-    }
-    else
-    {
-      if($role != NULL)
-      {
-        echo "Can't make relation between director and movie if there is a role";
-      }
-
-      $rs = mysqli_query($db,"SELECT id from Director WHERE first = $firstName AND last = $lastName AND dob = $dob;");
-
-      $ry = mysqli_query($db,"SELECT id from Movie WHERE title = $movieName AND year = $movieYear;");
-
-      $rz = mysqli_query($db,"INSERT INTO MovieDirector (mid, did) VALUES ($ry, $rs);");
-
-    }
-    //mysqli_close($db);
+  $db = new mysqli('localhost', 'cs143', '', 'CS143');
+  if($db->connect_errno > 0){
+    die('Unable to connect to database [' . $db->connect_error . ']');
+  }
+  $rs = mysqli_query($db,"INSERT INTO MovieActor(mid,aid,role) VALUES ($movieID, $actorID,'$role');");
+  if(!$rs){
+      //$errmsg = $db->error;
+      print "No enough information/Already existed<br/>";
+      exit(3);
+  }else{
+      echo "Succefully Inserted!<br>";
+      //echo " <a href=' MovieInfo.php?mid=$movie '>Click this to go back to see the movie</a>";
+  }
+  //mysql_close($db);
 }
 ?>
 </div>
