@@ -45,6 +45,8 @@ li a:hover:not(.active) {
   <li><a href="addComments.php">Add Comment</a></li>
   <li><a href="searchActor.php">Search Actor</a></li>
   <li><a href="searchMovie.php">Search Movie</a></li>
+  <li><a href="search.php">Search</a></li>
+
 
 </ul>
 
@@ -58,6 +60,7 @@ li a:hover:not(.active) {
 <form method="post" action="<?php echo $_SERVER['PHP_SELF'];?>">
 Phrase: <input type="text" name="fname"> <br>
 <br><input type="submit">
+<br>
 <br>
 </form>
 <?php
