@@ -64,7 +64,11 @@ li a:hover:not(.active) {
   <li><a href="addAnActor.php">Add New Actor/Director</a></li>
   <li><a href="addAMovie.php">Add Movie </a></li>
   <li><a href="addMARelation.php">Add Movie/Actor Relation </a></li>
+<<<<<<< HEAD
   <li><a href="addMDRelation.php">Add Movie/Director Relationt</a></li>
+=======
+  <li><a href="addMDRelation.php">Add Movie/Director Relation </a></li>
+>>>>>>> 3e036920861da8fc909e29592aaea59bf1d8812c
   <li><a href="addComments.php">Add Comment</a></li>
 </ul>
 
@@ -74,6 +78,7 @@ li a:hover:not(.active) {
 <br>
 <br> <br>
 <form method="post" action="<?php echo $_SERVER['PHP_SELF'];?>">
+<<<<<<< HEAD
 <div class="form-group">
                 <label for="movie">Movie Title:</label>
                 <span class="error">* <?php echo "$movieErr";?></span>
@@ -95,6 +100,15 @@ li a:hover:not(.active) {
                 </div>
 </form>
 Comment: 
+=======
+Your Name: <input type="text" name="name"> <br>
+Movie Title: <input type="text" name="title"> <br>
+Rating: <input type="text" name="title"> <br>
+
+</form>
+//Should make this a drop down menu
+Comment:
+>>>>>>> 3e036920861da8fc909e29592aaea59bf1d8812c
 <form method="post" action="<?php echo $_SERVER['PHP_SELF'];?>">
 <textarea name="query" cols="60" rows="8" style="margin: 0px; width: 590px; height: 269px;"></textarea>
 <br><input type="submit">
@@ -105,7 +119,10 @@ Comment:
   )
   {
     $title = $_REQUEST['title'];
+    $name = $_REQUEST['name'];
     $comment = $_REQUEST['comment'];
+    $rating = $_REQUEST['rating'];
+    //Need to get the current time
 
     //Connect PHP code with SQL
     $db = new mysqli('localhost', 'cs143', '', 'TEST');
@@ -114,6 +131,7 @@ Comment:
       die('Unable to connect to database [' . $db->connect_error . ']');
     }
 
+<<<<<<< HEAD
     
     if(mysqli_query($db,"INSERT INTO Director (id,last, first, dob, dod) VALUES ($MaxDirectorID+1,'$firstName', '$lastName', '$dob', '$dod');"))
     {
@@ -121,7 +139,37 @@ Comment:
        echo "Successfully added!";
     }else{
       echo "No insert happened!";c
+=======
+    //Creating a drop down menu of all of the movies
+    /*$query = ("SELECT * FROM Movie");
+    $sql = $db->query($query);
+    if(mysql_num_rows($sql))
+    {
+      $select= '<SELECT NAME="select">';
+      while($rs=mysql_fetch_array($sql))
+      {
+        $select.='<option value="'.$rs['title'].'">'.'</option>';
+      }
     }
+    $select.='</SELECT>'; */
+    $rs = mysqli_query($db, "SELECT CURRENT_TIMESTAMP");
+    foreach($rs as $key => $var){
+        foreach($var as $col => $val) {
+            $theTime = $val;
+            //echo $MaxID1;
+        }
+>>>>>>> 3e036920861da8fc909e29592aaea59bf1d8812c
+    }
+    $rs = mysqli_query($db, "SELECT mid FROM Movie WHERE title = $title;");
+    foreach($rs as $key => $var){
+        foreach($var as $col => $val) {
+            $mID = $val;
+            //echo $MaxID1;
+        }
+    }
+
+    mysqli_query($db, "INSERT INTO Review (name, time, mid, rating, comment) VALUES ('$name', $theTime, $mID, $rating, '$comment');");
+
 
   }
 */

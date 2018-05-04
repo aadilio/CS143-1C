@@ -1,11 +1,11 @@
-<?php 
-    $db = new mysqli('localhost', 'cs143', '', 'CS143');
+<?php
+    $db = new mysqli('localhost', 'cs143', '', 'TEST');
   if($db->connect_errno > 0){
       die('Unable to connect to database [' . $db->connect_error . ']');
   }
     $query="SELECT CONCAT(title,' ','(',year,')') AS MovieName, id FROM Movie;";
     $rsMovie = $db->query($query);
-    //Basic error handling 
+    //Basic error handling
     if(!$rsMovie){
         $errmsg = $db->error;
         print "Query failed: $errmsg <br />";
@@ -13,7 +13,7 @@
     }
     $query1="SELECT CONCAT(first, ' ', last,' ', '(', dob, ')')AS ActorName, id, dob FROM Actor ORDER BY last ASC;";
     $rsactor = $db->query($query1);
-    //Basic error handling 
+    //Basic error handling
     if(!$rsactor){
         $errmsg = $db->error;
         print "Query failed: $errmsg <br />";
@@ -66,8 +66,14 @@ li a:hover:not(.active) {
   <li><a href="addAnActor.php">Add New Actor/Director</a></li>
   <li><a href="addAMovie.php">Add Movie </a></li>
   <li><a href="addMARelation.php">Add Movie/Actor Relation </a></li>
+<<<<<<< HEAD
   <li><a href="addMDRelation.php">Add Movie/Director Relationt</a></li>
+=======
+  <li><a href="addMDRelation.php">Add Movie/Director Relation </a></li>
+>>>>>>> 3e036920861da8fc909e29592aaea59bf1d8812c
   <li><a href="addComments.php">Add Comment</a></li>
+  <li><a href="search.php">Search</a></li>
+
 </ul>
 
 
@@ -94,7 +100,7 @@ Role: <input type="text" name="role"><br>
                       }
                     ?>
                 </select>
-                
+
                   <br>
                   <label for="actor">Actor:</label>
                   <span class="error">* <?php echo "$actorErr";?></span>
@@ -115,23 +121,15 @@ Role: <input type="text" name="role"><br>
                   </select>
 <br><input type="submit">
 </div>
-</form>         
+</form>
 
 
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST"){
   $movie = $_REQUEST['sMovie'];
-  $actor = $_REQUEST['acotr'];
+  $humanNameAndDob = $_REQUEST['actor'];
   $role = $_REQUEST['role'];
-    //$occupation = $_REQUEST['actOrDir'];
-    //$sex = $_REQUEST['maleOrFemale'];
-    //$humanNameAndDob = $_REQUEST['actor'];
-    //$movieAndYear = $_REQUEST['sMovie'];
-    //$role = $_REQUEST['role'];
-    //$fName = $_REQUEST['firstNmae'];
-    //$lName = $_REQUEST['lastNmae'];
-    //$dob = $_REQUEST['dob'];
-    //$dod = $_REQUEST['dod'];
+  $occupation = "Actor";
     //Connect PHP code with SQL
     $db = new mysqli('localhost', 'cs143', '', 'TEST');
     if($db->connect_errno > 0)
@@ -200,27 +198,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 
     }
 
+    echo $movieName;
+    echo $firstName;
+    echo "THIS TEST";
+
     if($occupation == "Actor")
     {
         //$rs = $db->query("SELECT id from Actor ORDER BY id DESC LIMIT 1;");
     	$rs = mysqli_query($db,"SELECT id from Actor WHERE first = $firstName AND last = $lastName AND dob = $dob;");
-
-	    $ry = mysqli_query($db,"SELECT id from Movie WHERE title = $movieName AND year = $movieYear;");
-
-      $rz = mysqli_query($db,"INSERT INTO MovieActor (mid, aid, role) VALUES ($ry, $rs, $role);");
-    }
-    else
-    {
-      if($role != NULL)
-      {
-        echo "Can't make relation between director and movie if there is a role";
+      foreach($rs as $key => $var){
+          foreach($var as $col => $val) {
+              $aID = $val;
+              //echo $MaxID1;
+          }
       }
 
-      $rs = mysqli_query($db,"SELECT id from Director WHERE first = $firstName AND last = $lastName AND dob = $dob;");
 
-      $ry = mysqli_query($db,"SELECT id from Movie WHERE title = $movieName AND year = $movieYear;");
+	    $rs = mysqli_query($db,"SELECT id from Movie WHERE title = $movieName AND year = $movieYear;");
+      foreach($rs as $key => $var){
+          foreach($var as $col => $val) {
+              $mID = $val;
+              //echo $MaxID1;
+          }
+      }
 
-      $rz = mysqli_query($db,"INSERT INTO MovieDirector (mid, did) VALUES ($ry, $rs);");
+      $rz = mysqli_query($db,"INSERT INTO MovieActor (mid, aid, role) VALUES ($mID, $aID, '$role');");
 
     }
     //mysqli_close($db);
