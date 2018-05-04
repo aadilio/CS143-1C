@@ -118,10 +118,12 @@ MPAA Rating: <input type="text" name="rating"> <br>
     $company = $_REQUEST['company'];
     $year = $_REQUEST['year'];
     $rating = $_REQUEST['rating'];
-    $genre = $_REQUEST['genre[]'];
-
+    $genre = $_REQUEST['genre'];
+    //print $genre;
+    //print_r($genre);
     //Connect PHP code with SQL
-    $db = new mysqli('localhost', 'cs143', '', 'TEST');
+
+    $db = new mysqli('localhost', 'cs143', '', 'CS143');
     if($db->connect_errno > 0)
     {
       die('Unable to connect to database [' . $db->connect_error . ']');
@@ -129,42 +131,48 @@ MPAA Rating: <input type="text" name="rating"> <br>
 
     $rs = mysqli_query($db,"SELECT id from Movie ORDER BY id DESC LIMIT 1;");
     foreach($rs as $key => $var){
-      foreach($var as $col => $val) {
-          $MaxID1 = $val;
-              //echo $MaxID1;
+        foreach($var as $col => $val) {
+            $MaxID1 = $val;
+            //echo $MaxID1;
         }
     }
     $rs = mysqli_query($db,"SELECT id from MaxMovieID;");
     foreach($rs as $key => $var){
-       foreach($var as $col => $val){
-          $MaxID2 = $val;
-              //echo $MaxID2;
+        foreach($var as $col => $val){
+            $MaxID2 = $val;
+            //echo $MaxID2;
         }
     }
+    //echo $title;
     $MaxMovieID = max($MaxID1,$MaxID2);
-    echo $MaxMovieID;
-    $rs = mysqli_query($db,"INSERT INTO Movie (id, title, year, rating, company) VALUES ($MaxMovieID+1,'$title', '$year', '$rating', '$company');");
-    if($rs == true){
-          //if（!mysqli_query($db,"UPDATE MaxPersonID SET id = $MaxDirectorID+1;")）{
-          //	mysqli_query($db,"INSERT INTO MaxPersonID(id) VALUES ($MaxDirectorID+1);")
-          //}
-        $rs = mysqli_query($db,"SELECT id from MaxMovieID;");
-        foreach($rs as $key => $var){
-            foreach($var as $col => $val){
-                $id = $val;
-            }
-      }
-      if($id == 0){
-        mysqli_query($db,"INSERT INTO MaxMovieID(id) VALUES ($MaxMovieID+1);");
-      }
-      else
-      {
-        mysqli_query($db,"UPDATE MaxMovieID SET id = $MaxMovieID+1;");
-      }
-        echo "Successfully added!";
-      }else{
-        echo "No insert happened!";
-      }
+    //echo $MaxMovieID+1;
+    $rs = mysqli_query($db,"INSERT INTO Movie(id,title,year,rating,company) VALUES ($MaxMovieID+1, '$title', $year, '$rating','$company');");
+    if(!$rs){
+        $errmsg = $db->error;
+        //print "No enough information for Movie: $errmsg<br/>";
+        exit(3);
+    }else{
+        echo "Succefully Inserted!<br>";
+    }
+
+    $i = count($genre);
+      for($n=0;$n < $i;$n++)
+    {
+      $rs = mysqli_query($db,"INSERT INTO MovieGenre(mid,genre) VALUES ($MaxMovieID+1,'$genre[$n]');");
+    }
+
+
+
+    /*
+    $rs = mysqli_query($db,"INSERT INTO Movie(id,title,year,rating,company) VALUES ($MaxMovieID, '$title', $year, '$rating','$company');");
+    if(!$rs){
+        //$errmsg = $db->error;
+        print "No enough information for Movie Genre<br/>";
+        exit(3);
+    }else{
+        echo "Succefully Inserted!<br>";
+    }
+*/
 
 
   }

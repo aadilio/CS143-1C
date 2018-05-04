@@ -78,7 +78,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
     $dod = $_REQUEST['DOD'];
 
     //Connect PHP code with SQL
-    $db = new mysqli('localhost', 'cs143', '', 'TEST');
+    $db = new mysqli('localhost', 'cs143', '', 'CS143');
     if($db->connect_errno > 0)
     {
       die('Unable to connect to database [' . $db->connect_error . ']');
@@ -103,7 +103,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 	        }
 	    }
 	    $MaxActorID = max($MaxID1,$MaxID2);
-	    echo $MaxActorID;
+	    //echo $MaxActorID;
 	    if($dod == 'N/A'){
 	    	$rs = mysqli_query($db,"INSERT INTO Actor (id, last, first, sex, dob) VALUES ($MaxActorID+1,'$firstName', '$lastName', '$sex', '$dob');");
 	    }else{
