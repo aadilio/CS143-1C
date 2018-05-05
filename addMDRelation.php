@@ -1,6 +1,11 @@
 <?php
   //connection to database
-  include('connect.php');
+  //include('connect.php');
+  $db = new mysqli('localhost', 'cs143', '', 'CS143');
+  if($db->connect_errno > 0)
+  {
+    die('Unable to connect to database [' . $db->connect_error . ']');
+  }
   $query="SELECT CONCAT(title,' ','(',year,')') AS MovieName, id FROM Movie;";
   $rsmovie = $db->query($query);
   //Basic error handling
@@ -66,8 +71,8 @@ li a:hover:not(.active) {
     <li><a href="addMARelation.php">Add Movie/Actor Relation </a></li>
     <li><a href="addMDRelation.php">Add Movie/Director Relation </a></li>
     <li><a href="addComments.php">Add Comment</a></li>
-    <li><a href="searchActor.php">Search Actor</a></li>
-    <li><a href="searchMovie.php">Search Movie</a></li>
+    <li><a href="search.php">Search</a></li>
+
   </ul>
 
 

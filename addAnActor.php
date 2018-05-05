@@ -43,8 +43,8 @@ li a:hover:not(.active) {
     <li><a href="addMARelation.php">Add Movie/Actor Relation </a></li>
     <li><a href="addMDRelation.php">Add Movie/Director Relation </a></li>
     <li><a href="addComments.php">Add Comment</a></li>
-    <li><a href="searchActor.php">Search Actor</a></li>
-    <li><a href="searchMovie.php">Search Movie</a></li>
+    <li><a href="search.php">Search</a></li>
+
   </ul>
 
 
@@ -105,9 +105,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 	    $MaxActorID = max($MaxID1,$MaxID2);
 	    //echo $MaxActorID;
 	    if($dod == 'N/A'){
-	    	$rs = mysqli_query($db,"INSERT INTO Actor (id, last, first, sex, dob) VALUES ($MaxActorID+1,'$firstName', '$lastName', '$sex', '$dob');");
+	    	$rs = mysqli_query($db,"INSERT INTO Actor (id, first, last, sex, dob) VALUES ($MaxActorID+1,'$firstName', '$lastName', '$sex', '$dob');");
 	    }else{
-	    	$rs = mysqli_query($db,"INSERT INTO Actor (id, last, first, sex, dob, dod) VALUES ($MaxActorID+1,'$firstName', '$lastName', '$sex', '$dob', '$dod');");
+	    	$rs = mysqli_query($db,"INSERT INTO Actor (id, first, last, sex, dob, dod) VALUES ($MaxActorID+1,'$firstName', '$lastName', '$sex', '$dob', '$dod');");
 		}
 	    if($rs == true){
 	      	//if（!mysqli_query($db,"UPDATE MaxPersonID SET id = $MaxDirectorID+1;")）{
@@ -146,7 +146,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 	        }
 	    }
 	    $MaxDirectorID = max($MaxID1,$MaxID2);
-	    echo $MaxDirectorID;
+	    //echo $MaxDirectorID;
 	    if($dod == 'N/A'){
 			$rs = mysqli_query($db,"INSERT INTO Director (id,last, first, dob) VALUES ($MaxDirectorID+1,'$firstName', '$lastName', '$dob');");
 		}else{

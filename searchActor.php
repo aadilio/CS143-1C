@@ -43,8 +43,6 @@ li a:hover:not(.active) {
   <li><a href="addMARelation.php">Add Movie/Actor Relation </a></li>
   <li><a href="addMDRelation.php">Add Movie/Director Relation </a></li>
   <li><a href="addComments.php">Add Comment</a></li>
-  <li><a href="searchActor.php">Search Actor</a></li>
-  <li><a href="searchMovie.php">Search Movie</a></li>
   <li><a href="search.php">Search</a></li>
 
 
@@ -68,7 +66,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
     $phrase = $_REQUEST['fname'];
 
     //Connect PHP code with SQL
-    $db = new mysqli('localhost', 'cs143', '', 'TEST');
+    $db = new mysqli('localhost', 'cs143', '', 'CS143');
     if($db->connect_errno > 0)
     {
       die('Unable to connect to database [' . $db->connect_error . ']');
@@ -76,9 +74,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
     //echo $sex;
     //Inserting the submitted values into the Actor/Director table
         //$rs = $db->query("SELECT id from Actor ORDER BY id DESC LIMIT 1;");
-    $rs = mysqli_query($db,"SELECT first, last, dob from Actor WHERE first LIKE '%$phrase%' OR last LIKE '%$phrase%' ORDER BY first DESC;");
+  //  $rs = mysqli_query($db,"SELECT first, last, dob from Actor WHERE first LIKE '%$phrase%' OR last LIKE '%$phrase%' ORDER BY first DESC;");
   //  $rs = mysqli_query($db,"SELECT CONCAT_WS(" ", first, last) AS name, dob from Actor WHERE first LIKE '%$phrase%' OR last LIKE '%$phrase%' ORDER BY first DESC;");
-  //  $rs = mysqli_query($db,"SELECT CONCAT_WS(" ", first, last) AS name, dob FROM Actor WHERE first LIKE '%Tom%' OR last LIKE '%Tom%' ORDER BY first ASC LIMIT 5;");
+    //$rs = mysqli_query($db,"SELECT CONCAT(first, ' ', last) AS name, dob FROM Actor WHERE first LIKE '%$phrase%' OR last LIKE '%$phrase%' ORDER BY first DESC;");
+    $rs = mysqli_query($db,"SELECT id, CONCAT(first, ' ', last) AS name, dob FROM Actor WHERE first LIKE '%$phrase%' OR last LIKE '%$phrase%' ORDER BY first DESC;");
+
     if ($rs->num_rows > 0){
         $display = "<table border='1' width='600'>";
         foreach($rs as $key => $var) {
@@ -89,21 +89,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
             }
             $display .= '</tr>';
             $display .= '<tr>';
-            foreach($var as $col => $val) {
-                $display .= '<td>' . $val . '</td>';
+            foreach($var as $col => $val)
+            {
+                $my_id_num = $var["id"];
+                $vaz = "<a href=\"printActors.php?id=".$my_id_num."\">".$val."</a><br/>";
+                $display .= '<td>' . $vaz . '</td>';
             }
             $display .= '</tr>';
         }
         else {
+            $my_id_num=1;
             $display .= '<tr>';
-            foreach($var as $col => $val) {
-                $display .= '<td>' . $val . '</td>';
+            foreach($var as $col => $val)
+            {
+                $my_id_num = $var["id"];
+                $vaz = "<a href=\"printActors.php?id=".$my_id_num."\">".$val."</a><br/>";
+                $display .= '<td>' . $vaz . '</td>';
             }
             $display .= '</tr>';
         }
     }
     $display .= '</table>';
-    echo $display;
+//    $id_num = $ry->fetch_assoc();
+  //  $my_id_num = $id_num["id"];
+    echo "<a href=\"printActors.php?id=".$my_id_num."\">".$display."</a><br/>";
     }
     else {
       echo "None found";
