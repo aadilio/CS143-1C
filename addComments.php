@@ -1,6 +1,9 @@
 <?php
   //connection to database
-  include('connect.php');
+  $db = new mysqli('localhost', 'cs143', '', 'CS143');
+  if($db->connect_errno > 0){
+      die('Unable to connect to database [' . $db->connect_error . ']');
+  }
   $query="SELECT CONCAT(title,' ','(',year,')') AS MovieName, id FROM Movie;";
   $rsmovie = $db->query($query);
   //Basic error handling
